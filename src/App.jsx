@@ -1,35 +1,38 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React, { useState } from "react";
+import TravelList from "./components/TravelList";
+import AddTravel from "./components/AddTravel";
+import "./App.css";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [travels, setTravels] = useState([]);
+
+  const addTravel = (travel) => {
+    setTravels([...travels, travel]);
+  };
+
+  const removeTravel = (id) => {
+    setTravels(travels.filter((travel) => travel.id !== id));
+  };
+
+  const markAsDone = (id) => {
+    setTravels(
+      travels.map((travel) =>
+        travel.id === id ? { ...travel, done: !travel.done } : travel
+      )
+    );
+  };
 
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <div className="App">
+      <h1>Travel List</h1>
+      <AddTravel addTravel={addTravel} />
+      <TravelList
+        travels={travels}
+        removeTravel={removeTravel}
+        markAsDone={markAsDone}
+      />
+    </div>
+  );
 }
 
-export default App
+export default App;
